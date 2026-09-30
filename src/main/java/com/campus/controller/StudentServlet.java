@@ -1,15 +1,15 @@
 package com.campus.controller;
 
-import java.io.IOException;
-
-import com.campus.services.StudentService;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import com.campus.services.StudentService;
+
 @WebServlet("/students")
 public class StudentServlet extends HttpServlet {
 
@@ -17,23 +17,22 @@ public class StudentServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws IOException,ServletException {
-                var students = studentService.getStudents();
-                request.setAttribute("Students", studentService.getStudents());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/student.jsp");
-                dispatcher.forward(request, response);
+            throws IOException, ServletException {
+        var students = studentService.getStudents();
+        request.setAttribute("students", students);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/student.jsp");
+        dispatcher.forward(request, response);
         
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws IOException {
+
         String name = request.getParameter("name");
         String course = request.getParameter("course");
-        studentService.addStudent(name, course);
+        int semester = Integer.parseInt(request.getParameter("semester"));
+        studentService.addStudent(name, course, semester);
         response.sendRedirect("/students");
-        
     }
-
-    
 }
